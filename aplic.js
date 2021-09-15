@@ -19,7 +19,7 @@ const CrearItem= (actividad) => {
 const GuardarDB = () => {
     localStorage.setItem('rutina', JSON.stringify(arrayActividades)); //?????
 }
-//CrearItem('correr');
+//CrearItem('correr'); 
 //CrearItem('nadar');
 //console.log(arrayActividades);
 
