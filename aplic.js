@@ -17,7 +17,35 @@ const CrearItem= (actividad) => {
 }
 
 const GuardarDB = () => {
-    localStorage.setItem('rutina', JSON.stringify(arrayActividades)); //?????
+    localStorage.setItem('tareas', JSON.stringify(arrayActividades));
+    PintarDB();
+}
+
+const PintarDB = () => {
+    listaActividadesUI.innerHTML ='';
+    arrayActividades = JSON.parse(localStorage.getItem('tareas'));
+    if(arrayActividades === null){
+        arrayActividades = [];
+    }
+    else
+    {
+        arrayActividades.forEach(element => {
+            listaActividadesUI.innerHTML += `<div class="alert alert-primary" role="alert">
+            <i class="material-icons float-left mr-3">
+                star
+              </i>
+            <b>${element.actividad}</b> - ${element.estado}
+            <span class="float-right">
+            <i class="material-icons">
+                done
+              </i>
+              <i class="material-icons">
+                delete
+              </i>
+            </span>
+        </div>`
+        });
+    }       
 }
 //CrearItem('correr'); 
 //CrearItem('nadar');
@@ -33,5 +61,6 @@ formularioUI.addEventListener('submit', (e) => {
     formularioUI.reset();
 });
 
+document.addEventListener('DOMContentLoad', PintarDB());
 
 
