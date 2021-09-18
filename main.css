@@ -1,0 +1,17 @@
+
+  .luis_main {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 40px;
+    background: #ececea;
+  }
+
+.luis_main > h1 {
+    padding: 10px 20px 0px 10px;
+    font-size: 50px;
+  }
+
+  #listaActividades {
+    background: #ececea;
+  }
+
