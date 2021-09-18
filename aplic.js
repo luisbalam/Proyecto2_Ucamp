@@ -22,7 +22,7 @@ const CrearItem= (actividad) => {
 //graba en el localstorage con el identificar tareas los items del arreglo de actividades (formato JSON)
 const GuardarDB = () => {
     localStorage.setItem('tareas', JSON.stringify(arrayActividades));
-    PintarDB(); //llama al método con este nombre
+    PintarDB(); //llama al método con este nombre, quien actualiza lo que se ve en el html
 }
 
 //esta función
@@ -35,7 +35,14 @@ const PintarDB = () => {
     else // pero si no no esta vacío el contenido del localstorage
     {
         arrayActividades.forEach(element => { //recorre el arreglo y escribe en el HTML el contenido (aparecen las tareas en el sitio)
-            listaActividadesUI.innerHTML += `<div class="alert alert-primary" role="alert"> <i class="material-icons float-left mr-3">star</i><b>${element.actividad}</b> - ${element.estado}<span class="float-right"><i class="material-icons">done</i><i class="material-icons">delete</i></span></div>`
+            if(element.estado=="Pendiente"){
+                listaActividadesUI.innerHTML += `<div class="alert alert-primary" role="alert"> <i class="material-icons float-left mr-3">star</i><b>${element.actividad}</b> - ${element.estado}<span class="float-right"><i class="material-icons">done</i><i class="material-icons">delete</i></span></div>`
+
+            }
+            else{
+                listaActividadesUI.innerHTML += `<div class="alert alert-danger" role="alert"> <i class="material-icons float-left mr-3">star</i><b>${element.actividad}</b> - ${element.estado}<span class="float-right"><i class="material-icons">done</i><i class="material-icons">delete</i></span></div>`
+
+            }
         });
     }       
 }
@@ -60,11 +67,6 @@ const editarTarea = (actividad) => {
     GuardarDB();
 }
 
-//CrearItem('correr'); 
-//CrearItem('nadar');
-//console.log(arrayActividades);
-
-
 
 
 
@@ -72,23 +74,23 @@ const editarTarea = (actividad) => {
 //eventListener
 formularioUI.addEventListener('submit', (e) => {
     e.preventDefault(); //para que no se refresque el sitio web o se ejecuten otras cosas diferentes a lo que quiero
-    let actividadUI = document.querySelector('#actividad').value;
+    let actividadUI = document.querySelector('#actividad').value; //se asigna a la variable actividadUI la tarea introducida en el formulario
 
-    CrearItem(actividadUI);
-    GuardarDB();
-    formularioUI.reset();
+    CrearItem(actividadUI); //se llama la función que crea el item para anexar la tarea al arreglo
+    GuardarDB();  //También se llama la función para guardar esa tarea en el localstorage
+    formularioUI.reset(); //se borra del formulario lo tecleado.
 });
 
-document.addEventListener('DOMContentLoad', PintarDB());
+document.addEventListener('DOMContentLoad', PintarDB()); //cuando se recargue la página?? se pone el contenido del localstorage en el html
 
-listaActividadesUI.addEventListener('click', (e) => {
+listaActividadesUI.addEventListener('click', (e) => {  //al hacer click en agregar tarea o presionar enter
     e.preventDefault();
-    if(e.target.innerHTML === 'done' || e.target.innerHTML === 'delete'){
-        if (e.target.innerHTML === 'delete'){
-             eliminarTarea(e.path[2].childNodes[2].innerHTML);
+    if(e.target.innerHTML === 'done' || e.target.innerHTML === 'delete'){ //detecta que se haya hecho click en la palomita o en el bote de basura
+        if (e.target.innerHTML === 'delete'){ //si se hizo click en el bote de basura
+             eliminarTarea(e.path[2].childNodes[2].innerHTML); //llama la funcion eliminar pasando como parámetro el index de la opcion correspondiente
         }
-        if (e.target.innerHTML === 'done'){
-            editarTarea(e.path[2].childNodes[2].innerHTML);
+        if (e.target.innerHTML === 'done'){  //si se hizo click en la palomita
+            editarTarea(e.path[2].childNodes[2].innerHTML); //llama la funcion editar pasando como parámetro el index de la opcion correspondiente
         }
     }
 });
